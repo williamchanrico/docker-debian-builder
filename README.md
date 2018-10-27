@@ -3,7 +3,7 @@
 With Docker, you can set up a clean build environment for Debian
 packaging purposes. The container is using Ubuntu 18.04 as the base image.
 
-Assuming that you already have the packaging files to build a `deb` package.
+Will assume that you already have the packaging files to build a `deb` package.
 
 ## Example For Building Golang Project
 
