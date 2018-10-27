@@ -1,6 +1,4 @@
-# Clean Debian Package Build Environment Using Docker
-
-## Overview
+# docker-debian-builder
 
 With Docker, you can set up a clean build environment for Debian
 packaging purposes. The container is using Ubuntu 18.04 as the base image.
