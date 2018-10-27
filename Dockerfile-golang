@@ -1,0 +1,36 @@
+FROM ubuntu:18.04
+
+RUN set -ex \
+    && sed -i -- 's/# deb-src/deb-src/g' /etc/apt/sources.list \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends \
+               build-essential \
+               cdbs \
+               devscripts \
+               equivs \
+               fakeroot \
+               gcc curl wget git openssh-client ca-certificates  \
+    && apt-get clean \
+    && rm -rf /tmp/* /var/tmp/*
+
+#
+# Custom
+#
+
+# Install Go 1.10.4
+RUN wget "https://dl.google.com/go/go1.10.4.linux-amd64.tar.gz" -O /tmp/go.tar.gz && \
+  tar -C /usr/local -zxvf /tmp/go.tar.gz && \
+  rm /tmp/go.tar.gz && \
+  bash -c "mkdir -p /go/{src,bin}"
+ENV GOPATH /go
+ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
+
+# Install dep (will install to $GOPATH/bin)
+RUN curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh && cp $GOPATH/bin/dep /usr/local/bin/
+
+WORKDIR /go
+
+# Config git
+RUN git config --global url."git@github.com:".insteadOf "https://github.com/" && \
+  mkdir ~/.ssh && \
+  ssh-keyscan github.com >> ~/.ssh/known_hosts
